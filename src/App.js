@@ -1,5 +1,5 @@
 import React from "react";
-import { HashRouter, Route } from "react-router-dom"
+import { HashRouter, Switch, Route } from "react-router-dom"
 import Header from "./header/Header";
 import Main from "./main/Main";
 import Movie from "./movie/Movie";
@@ -10,9 +10,11 @@ const App = () => {
     <HashRouter basename='/'>
       <div>
         <Header />
-        <Route exact path='/' component={Main} />
-        <Route path="/movie/:movieId" component={Movie} />
-        <Route component={NotFound} />
+        <Switch>
+          <Route exact path='/' component={Main} />
+          <Route path="/movie/:movieId" component={Movie} />
+          <Route component={NotFound} />
+        </Switch>
       </div>
     </HashRouter>
   );

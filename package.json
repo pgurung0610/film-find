@@ -2,7 +2,7 @@
   "name": "film_find",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://pgurung0610.github.io/film_find/",
+  "homepage": "https://pgurung0610.github.io/film-find/",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",

@@ -11,8 +11,8 @@ const App = () => {
       <div>
         <Header />
         <Switch>
-          <Route exact path='/film-find/' component={Main} />
-          <Route path="/film-find/movie/:movieId" component={Movie} />
+          <Route exact path='/' component={Main} />
+          <Route path="/movie/:movieId" component={Movie} />
           <Route component={NotFound} />
         </ Switch>
       </div>

@@ -8,15 +8,15 @@ class Main extends React.Component {
     movies: [],
     total_pages: 1,
     page: 1,
-    moviesUrl: `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1`,
-    genre: "Comedy",
+    moviesUrl: `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=en-US&sort_by=popularity.desc&with_genres=&primary_release_date.gte=1990-01-01&primary_release_date.lte=2020-12-31&vote_average.gte=8&vote_average.lte=10&with_runtime.gte=60&with_runtime.lte=240&page=1`,
+    genre: "All",
     genres: [],
     year: {
       label: "year",
-      min: 1990,
-      max: 2017,
+      min: 1950,
+      max: new Date().getFullYear(),
       step: 1,
-      value: { min: 2000, max: 2017 }
+      value: { min: new Date().getFullYear() - 30, max: new Date().getFullYear() }
     },
     rating: {
       label: "rating",
@@ -30,7 +30,7 @@ class Main extends React.Component {
       min: 0,
       max: 300,
       step: 15,
-      value: { min: 60, max: 120 }
+      value: { min: 60, max: 240 }
     }
 }
 
@@ -97,8 +97,14 @@ storeMovies = data => {
 
 generateUrl = () => {
   const {genres, year, rating, runtime, page } = this.state;
-  const selectedGenre = genres.find( genre => genre.name === this.state.genre);
-  const genreId = selectedGenre.id;
+  let genreId;
+  if(this.state.genre === "All") {
+    genreId = "";
+  }
+  else {
+    const selectedGenre = genres.find( genre => genre.name === this.state.genre);
+    genreId = selectedGenre.id;
+  }
 
   const moviesUrl = `https://api.themoviedb.org/3/discover/movie?` +
     `api_key=${process.env.REACT_APP_TMDB_API_KEY}&` +

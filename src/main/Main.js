@@ -11,6 +11,13 @@ class Main extends React.Component {
     moviesUrl: `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_TMDB_API_KEY}&language=en-US&sort_by=popularity.desc&with_genres=&primary_release_date.gte=1990-01-01&primary_release_date.lte=2020-12-31&vote_average.gte=8&vote_average.lte=10&with_runtime.gte=60&with_runtime.lte=240&page=1`,
     genre: "All",
     genres: [],
+    sort_by_category: 'Popularity',
+    sort_by_categories: [
+        {id: 0, name: 'Popularity', value: 'popularity'},
+        {id: 1, name: 'Release Date', value: 'primary_release_date'},
+        {id: 2, name: 'Title', value: 'original_title'},
+        {id: 3, name: 'Rating', value: 'vote_average'}],
+    sort_by_ordering: 'desc',
     year: {
       label: "year",
       min: 1950,
@@ -66,6 +73,10 @@ onGenreChange = event => {
   this.setState({ genre: event.target.value });
 }
 
+onSortByChange = event => {
+  this.setState({ sort_by_category: event.target.value });
+}
+
 setGenres = genres => {
   this.setState({ genres });
 }
@@ -96,7 +107,8 @@ storeMovies = data => {
 }
 
 generateUrl = () => {
-  const {genres, year, rating, runtime, page } = this.state;
+  const {genres, sort_by_categories, sort_by_ordering, year, rating, runtime, page } = this.state;
+
   let genreId;
   if(this.state.genre === "All") {
     genreId = "";
@@ -106,9 +118,13 @@ generateUrl = () => {
     genreId = selectedGenre.id;
   }
 
+  const sort_by_obj = sort_by_categories.find( category => category.name === this.state.sort_by_category);
+  const sort_by = sort_by_obj.value + "." + sort_by_ordering;
+
   const moviesUrl = `https://api.themoviedb.org/3/discover/movie?` +
     `api_key=${process.env.REACT_APP_TMDB_API_KEY}&` +
-    `language=en-US&sort_by=popularity.desc&` +
+    `language=en-US&` +
+    `sort_by=${sort_by}&` +
     `with_genres=${genreId}&` +
     `primary_release_date.gte=${year.value.min}-01-01&` +
     `primary_release_date.lte=${year.value.max}-12-31&` +
@@ -133,6 +149,7 @@ onSearchButtonClick = () => {
             onChange={this.onChange}
             onGenreChange={this.onGenreChange}
             setGenres={this.setGenres}
+            onSortByChange={this.onSortByChange}
             onSearchButtonClick={this.onSearchButtonClick}
             {...this.state}
           />
